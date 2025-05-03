@@ -1,0 +1,13 @@
+---
+pkigen_output_path: ""
+pkigen_ca_common_name: ""
+pkigen_ca_secret_passphrase: ""
+pkigen_cert_file_name: ""
+pkigen_cert_common_name: ""
+pkigen_cert_organization_name: ""
+pkigen_cert_organizational_unit_name: ""
+pkigen_cert_email_address: ""
+pkigen_cert_country_name: ""
+pkigen_cert_valid_for: "+365d"
+pkigen_cert_valid_since: "-1d"
+pkigen_cert_alt_names: []
