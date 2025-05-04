@@ -38,17 +38,20 @@ argument_specs:
           - "the organization name of the certificate"
       pkigen_cert_organizational_unit_name:
         type: str
-        required: true
+        required: false
+        default: ""
         description:
           - "the organization unit name of the certificate"
       pkigen_cert_email_address:
         type: str
-        required: true
+        required: false
+        default: ""
         description:
           - "the owner email address of the certificate"
       pkigen_cert_country_name:
         type: str
-        required: true
+        required: false
+        default: ""
         description:
           - "the owner country name of the certificate"
       pkigen_cert_valid_for:
