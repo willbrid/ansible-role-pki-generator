@@ -11,4 +11,3 @@ pkigen_cert_country_name: ""
 pkigen_cert_valid_for: "+365d"
 pkigen_cert_valid_since: "-1d"
 pkigen_cert_alt_names: []
-pkigen_delete_csr_files: true
