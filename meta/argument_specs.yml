@@ -68,9 +68,3 @@ argument_specs:
         required: true
         description:
           - "the domain name to which the certificate will be applied"
-      pkigen_delete_csr_files:
-        type: bool
-        required: false
-        default: true
-        description:
-          - "whether to delete all generated csr files or not"
