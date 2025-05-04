@@ -1,0 +1,49 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  vars:
+    pkigen_output_path: "/tmp"
+    pkigen_cacertfile: "{{ pkigen_output_path }}/ca.pem"
+    pkigen_cakeyfile: "{{ pkigen_output_path }}/ca.key"
+    pkigen_certfile: "{{ pkigen_output_path }}/willbrid.com.crt"
+    pkigen_certkeyfile: "{{ pkigen_output_path }}/willbrid.com.key"
+
+  tasks:
+    - name: Get all pki files info
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop:
+        - "{{ pkigen_cacertfile }}"
+        - "{{ pkigen_cakeyfile }}"
+        - "{{ pkigen_certfile }}"
+        - "{{ pkigen_certkeyfile }}"
+      register: pkigen_pki_files_infos
+
+    - name: Check if all the pki files exist
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+      loop: "{{ pkigen_pki_files_infos.results }}"
+
+    - name: Get the content of ca certificate
+      ansible.builtin.command: "openssl x509 -text -noout -in {{ pkigen_cacertfile }}"
+      register: pkigen_cacert_content
+      changed_when: false
+
+    - name: Check if the content of ca certificate is correct
+      ansible.builtin.assert:
+        that:
+          - pkigen_cacert_content.rc == 0
+        fail_msg: "bad generated ca certificate : {{ pkigen_cacertfile }}"
+
+    - name: Get the content of certificate
+      ansible.builtin.command: "openssl x509 -text -noout -in {{ pkigen_certfile }}"
+      register: pkigen_cert_content
+      changed_when: false
+
+    - name: Check if the content of certificate is correct
+      ansible.builtin.assert:
+        that:
+          - pkigen_cert_content.rc == 0
+        fail_msg: "bad generated certificate : {{ pkigen_certfile }}"
