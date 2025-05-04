@@ -1,0 +1,46 @@
+---
+- name: Check if certificate file already exists
+  ansible.builtin.stat:
+    path: "{{ pkigen_output_path }}/{{ pkigen_cert_file_name }}.crt"
+  register: pkigen_cert_info
+
+- name: Create private key for new certificate
+  community.crypto.openssl_privatekey:
+    path: "{{ pkigen_output_path }}/{{ pkigen_cert_file_name }}.key"
+  when: pkigen_cert_info.stat.exists is not defined or not pkigen_cert_info.stat.exists
+
+- name: Create certificate signing request for new certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: "{{ pkigen_output_path }}/{{ pkigen_cert_file_name }}.key"
+    country_name: "{{ pkigen_cert_country_name }}"
+    organization_name: "{{ pkigen_cert_organization_name }}"
+    organizational_unit_name: "{{ pkigen_cert_organizational_unit_name }}"
+    email_address: "{{ pkigen_cert_email_address }}"
+    common_name: "{{ pkigen_cert_common_name }}"
+    subject_alt_name: "{{ item.value | map('regex_replace', '^', 'DNS:') | list }}"
+  with_dict:
+    dns_server: "{{ pkigen_cert_alt_names }}"
+  register: pkigen_cert_csr
+  when: pkigen_cert_info.stat.exists is not defined or not pkigen_cert_info.stat.exists
+
+- name: Sign certificate with our CA
+  community.crypto.x509_certificate_pipe:
+    csr_content: "{{ pkigen_cert_csr.results[0].csr }}"
+    provider: "{{ pkigen_cert_provider }}"
+    ownca_path: "{{ pkigen_output_path }}/ca.pem"
+    ownca_privatekey_path: "{{ pkigen_output_path }}/ca.key"
+    ownca_privatekey_passphrase: "{{ pkigen_ca_secret_passphrase }}"
+    ownca_not_after: "{{ pkigen_cert_valid_for }}"
+    ownca_not_before: "{{ pkigen_cert_valid_since }}"
+  register: pkigen_cert
+  when:
+    - pkigen_cert_csr is defined and pkigen_cert_csr.results is defined
+    - pkigen_cert_csr.results is iterable and pkigen_cert_csr.results | length > 0
+    - pkigen_cert_csr.results[0].csr is defined
+
+- name: Generate certificate file
+  ansible.builtin.copy:
+    dest: "{{ pkigen_output_path }}/{{ pkigen_cert_file_name }}.crt"
+    content: "{{ pkigen_cert.certificate }}"
+    mode: 0755
+  when: pkigen_cert is defined and pkigen_cert.certificate is defined

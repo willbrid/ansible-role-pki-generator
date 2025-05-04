@@ -1,0 +1,16 @@
+---
+- name: Setup CA certificate
+  ansible.builtin.import_tasks: ca-setup.yml
+
+- name: Setup CERT certificate
+  ansible.builtin.import_tasks: cert-setup.yml
+
+- name: Get content of "{{ pkigen_output_path }}"
+  ansible.builtin.command: "ls -ahl {{ pkigen_output_path }}"
+  register: pkigen_output_path_info
+  changed_when: false
+
+- name: Display content of "{{ pkigen_output_path }}"
+  ansible.builtin.debug:
+    msg: "{{ pkigen_output_path_info.stdout_lines }}"
+  changed_when: false

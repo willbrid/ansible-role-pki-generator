@@ -1,0 +1,36 @@
+---
+- name: Check if CA certificate file already exists
+  ansible.builtin.stat:
+    path: "{{ pkigen_output_path }}/ca.pem"
+  register: pkigen_cacert_info
+
+- name: Create private key with password protection
+  community.crypto.openssl_privatekey:
+    path: "{{ pkigen_output_path }}/ca.key"
+    cipher: "auto"
+    passphrase: "{{ pkigen_ca_secret_passphrase }}"
+  when: pkigen_cacert_info.stat.exists is not defined or not pkigen_cacert_info.stat.exists
+
+- name: Create certificate signing request for CA certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: "{{ pkigen_output_path }}/ca.key"
+    privatekey_passphrase: "{{ pkigen_ca_secret_passphrase }}"
+    common_name: "{{ pkigen_ca_common_name }}"
+    use_common_name_for_san: false
+    basic_constraints:
+      - 'CA:TRUE'
+    basic_constraints_critical: true
+    key_usage:
+      - keyCertSign
+    key_usage_critical: true
+  register: pkigen_ca_csr
+  when: pkigen_cacert_info.stat.exists is not defined or not pkigen_cacert_info.stat.exists
+
+- name: Create self-signed CA certificate from CSR
+  community.crypto.x509_certificate:
+    path: "{{ pkigen_output_path }}/ca.pem"
+    csr_content: "{{ pkigen_ca_csr.csr }}"
+    privatekey_path: "{{ pkigen_output_path }}/ca.key"
+    privatekey_passphrase: "{{ pkigen_ca_secret_passphrase }}"
+    provider: "{{ pkigen_ca_provider }}"
+  when: pkigen_ca_csr is defined and pkigen_ca_csr.csr is defined
