@@ -1,0 +1,3 @@
+---
+pkigen_ca_provider: "selfsigned"
+pkigen_cert_provider: "ownca"
