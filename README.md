@@ -93,6 +93,6 @@ cd $HOME/install-pki-generator && ansible-playbook playbook.yml
 
 MIT
 
-## Author Information
+## Informations sur l'auteur
 
 William Bridge NGASSAM
