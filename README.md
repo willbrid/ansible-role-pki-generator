@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/willbrid/ansible-role-pki-generator/blob/main/LICENSE) [![CI](https://github.com/willbrid/ansible-role-pki-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/willbrid/ansible-role-pki-generator/actions/workflows/ci.yml)
 
-**ansible-role-pki-generator** est un rôle Ansible permettant d’automatiser la génération des composants d'une infrastructure à clé publique (PKI). Il commence par créer une autorité de certification (CA) avec sa clé privée et son certificat. Ensuite, il génère un certificat serveur (ou client) avec sa clé privée, signé par cette autorité de certification. Ce rôle est compatible avec les environnements Linux et s'appuie sur **openssl**.
+Le rôle **ansible-role-pki-generator** permet d’automatiser la génération des composants d'une infrastructure à clé publique (PKI). Il commence par créer une autorité de certification (CA) avec sa clé privée et son certificat. Ensuite, il génère un certificat serveur (ou client) avec sa clé privée, signé par cette autorité de certification. Ce rôle est compatible avec les environnements Linux et s'appuie sur **openssl**.
 
 ## Exigences
 
@@ -47,7 +47,7 @@ vim $HOME/install-pki-generator/requirements.yml
 
 ```yaml
 - name: ansible-role-pki-generator
-  src: https://github.com/willbrid/ansible-role-pki-generator.git
+  src: git+https://github.com/willbrid/ansible-role-pki-generator.git
   version: v0.0.1
 ```
 
