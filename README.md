@@ -16,17 +16,17 @@ ansible-galaxy collection install community.crypto
 
 |Nom|Type|Description|Obligatoire|Valeur par défaut|
 |---|----|-----------|-----------|-----------------|
-`pkigen_output_path`|string|repertoire de génération des fichiers pki|oui|`""`
-`pkigen_ca_common_name`|string|"common name" pour le certificat de l'autorité de certification|oui|`""`
-`pkigen_ca_secret_passphrase`|string|Mot de passe de la clé privée de la CA|oui|`""`
-`pkigen_cert_file_name`|string|nom sans extension du fichier du certificat signé et de sa clé|oui|`""`
-`pkigen_cert_common_name`|string|"common name" du certificat signé|oui|`""`
-`pkigen_cert_organization_name`|string|nom de l’organisation détenteur du certificat|oui|`""`
-`pkigen_cert_organizational_unit_name`|string|unité organisationnelle du certificat|non|`""`
-`pkigen_cert_email_address`|string|adresse email liée au certificat|non|`""`
-`pkigen_cert_country_name`|string|code pays (ex: FR, US)|non|`""`
-`pkigen_cert_valid_for`|string|durée de validité du certificat|non|`"+365d"`
-`pkigen_cert_valid_since`|string|date de début de validité du certificat|non|`"-1d"`
+`pkigen_output_path`|str|repertoire de génération des fichiers pki|oui|`""`
+`pkigen_ca_common_name`|str|"common name" pour le certificat de l'autorité de certification|oui|`""`
+`pkigen_ca_secret_passphrase`|str|Mot de passe de la clé privée de la CA|oui|`""`
+`pkigen_cert_file_name`|str|nom sans extension du fichier du certificat signé et de sa clé|oui|`""`
+`pkigen_cert_common_name`|str|"common name" du certificat signé|oui|`""`
+`pkigen_cert_organization_name`|str|nom de l’organisation détenteur du certificat|oui|`""`
+`pkigen_cert_organizational_unit_name`|str|unité organisationnelle du certificat|non|`""`
+`pkigen_cert_email_address`|str|adresse email liée au certificat|non|`""`
+`pkigen_cert_country_name`|str|code pays (ex: FR, US)|non|`""`
+`pkigen_cert_valid_for`|str|durée de validité du certificat|non|`"+365d"`
+`pkigen_cert_valid_since`|str|date de début de validité du certificat|non|`"-1d"`
 `pkigen_cert_alt_names`|list|liste des noms alternatifs (SAN) pour le certificat (ex: ["willbrid.com", "*.willbrid.com"])|oui|`[]`
 
 ## Dépendances
@@ -68,7 +68,7 @@ vim $HOME/install-pki-generator/playbook.yml
   vars:
     pkigen_output_path: "/tmp"
     pkigen_ca_common_name: "*.willbrid.com"
-    pkigen_ca_secret_passphrase: "test@test"
+    pkigen_ca_secret_passphrase: "test@test" # Changez ce mot de passe : n'utilisez pas celui fourni à titre d'exemple
     pkigen_cert_file_name: "willbrid.com"
     pkigen_cert_common_name: "*.willbrid.com"
     pkigen_cert_organization_name: "willbrid"
