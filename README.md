@@ -38,7 +38,7 @@ ansible-galaxy collection install community.crypto
 - Installation du rôle
 
 ```bash
-mkdir -p $HOME/install-pki-generator/roles
+mkdir -p $HOME/install-pki-generator
 ```
 
 ```bash
@@ -52,7 +52,7 @@ vim $HOME/install-pki-generator/requirements.yml
 ```
 
 ```bash
-cd $HOME/install-pki-generator && ansible-galaxy install -r requirements.yml --roles-path roles
+cd $HOME/install-pki-generator && ansible-galaxy install --force -r requirements.yml
 ```
 
 - Utilisation du rôle dans un playbook
