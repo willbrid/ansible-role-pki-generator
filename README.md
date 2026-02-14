@@ -2,40 +2,40 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/willbrid/ansible-role-pki-generator/blob/main/LICENSE) [![CI](https://github.com/willbrid/ansible-role-pki-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/willbrid/ansible-role-pki-generator/actions/workflows/ci.yml)
 
-Le rôle **ansible-role-pki-generator** permet d’automatiser la génération des composants d'une infrastructure à clé publique (PKI). Il commence par créer une autorité de certification (CA) avec sa clé privée et son certificat. Ensuite, il génère un certificat serveur (ou client) avec sa clé privée, signé par cette autorité de certification. Ce rôle est compatible avec les environnements Linux et s'appuie sur **openssl**.
+The **ansible-role-pki-generator** role automates the generation of public key infrastructure (PKI) components. It begins by creating a certificate authority (CA) with its private key and certificate. Then, it generates a server (or client) certificate with its private key, signed by that certificate authority. This role is compatible with Linux environments and relies on **openssl**.
 
-## Exigences
+## Requirements
 
-La collection **community.crypto** doit être préalablement installée via la commande **ansible-galaxy**.
+The **community.crypto** collection must be installed beforehand using the **ansible-galaxy** command.
 
 ```bash
 ansible-galaxy collection install community.crypto
 ```
 
-## Description des Variables
+## Description of Variables
 
-|Nom|Type|Description|Obligatoire|Valeur par défaut|
-|---|----|-----------|-----------|-----------------|
-`pkigen_output_path`|str|repertoire de génération des fichiers pki|oui|`""`
-`pkigen_ca_common_name`|str|"common name" pour le certificat de l'autorité de certification|oui|`""`
-`pkigen_ca_secret_passphrase`|str|Mot de passe de la clé privée de la CA|oui|`""`
-`pkigen_cert_file_name`|str|nom sans extension du fichier du certificat signé et de sa clé|oui|`""`
-`pkigen_cert_common_name`|str|"common name" du certificat signé|oui|`""`
-`pkigen_cert_organization_name`|str|nom de l’organisation détenteur du certificat|oui|`""`
-`pkigen_cert_organizational_unit_name`|str|unité organisationnelle du certificat|non|`""`
-`pkigen_cert_email_address`|str|adresse email liée au certificat|non|`""`
-`pkigen_cert_country_name`|str|code pays (ex: FR, US)|non|`""`
-`pkigen_cert_valid_for`|str|durée de validité du certificat|non|`"+365d"`
-`pkigen_cert_valid_since`|str|date de début de validité du certificat|non|`"-1d"`
-`pkigen_cert_alt_names`|list|liste des noms alternatifs (SAN) pour le certificat (ex: ["willbrid.com", "*.willbrid.com"])|oui|`[]`
+|Name|Type|Description|Mandatory|Default value|
+|----|----|-----------|---------|-------------|
+`pkigen_output_path`|str|pki file generation directory|yes|`""`
+`pkigen_ca_common_name`|str|"common name" for the certificate of the certification authority|yes|`""`
+`pkigen_ca_secret_passphrase`|str|CA private key password|yes|`""`
+`pkigen_cert_file_name`|str|filename (without extension) of the signed certificate and its key|`""`
+`pkigen_cert_common_name`|str|"common name" of the signed certificate|yes|`""`
+`pkigen_cert_organization_name`|str|name of the organization holding the certificate|yes|`""`
+`pkigen_cert_organizational_unit_name`|str|organizational unit of the certificate|yes|`""`
+`pkigen_cert_email_address`|str|email address linked to the certificate|no|`""`
+`pkigen_cert_country_name`|str|country code (e.g., FR, US)|non|`""`
+`pkigen_cert_valid_for`|str|certificate validity period|no|`"+365d"`
+`pkigen_cert_valid_since`|str|certificate validity start date|no|`"-1d"`
+`pkigen_cert_alt_names`|list|list of alternative names (SANs) for the certificate (e.g., ["willbrid.com", "*.willbrid.com"])|yes|`[]`
 
-## Dépendances
+## Dependencies
 
 - **community.crypto**
 
-## Exemple Playbook
+## Example Playbook
 
-- Installation du rôle
+- Role installation
 
 ```bash
 mkdir -p $HOME/install-pki-generator
@@ -55,7 +55,7 @@ vim $HOME/install-pki-generator/requirements.yml
 cd $HOME/install-pki-generator && ansible-galaxy install --force -r requirements.yml
 ```
 
-- Utilisation du rôle dans un playbook
+- Using the role in a playbook
 
 ```bash
 vim $HOME/install-pki-generator/playbook.yml
@@ -68,7 +68,7 @@ vim $HOME/install-pki-generator/playbook.yml
   vars:
     pkigen_output_path: "/tmp"
     pkigen_ca_common_name: "*.willbrid.com"
-    pkigen_ca_secret_passphrase: "test@test" # Changez ce mot de passe : n'utilisez pas celui fourni à titre d'exemple
+    pkigen_ca_secret_passphrase: "test@test" # Change this password: do not use the one provided as an example.
     pkigen_cert_file_name: "willbrid.com"
     pkigen_cert_common_name: "*.willbrid.com"
     pkigen_cert_organization_name: "willbrid"
@@ -89,10 +89,10 @@ vim $HOME/install-pki-generator/playbook.yml
 cd $HOME/install-pki-generator && ansible-playbook playbook.yml
 ```
 
-## Licence
+## License
 
 MIT
 
-## Informations sur l'auteur
+## Author Information
 
 William Bridge NGASSAM
